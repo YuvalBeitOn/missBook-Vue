@@ -5,7 +5,7 @@ export default {
             <img :src="book.thumbnail" alt="book-photo">
             <h3>{{book.title}}</h3>
             <h4>{{book.listPrice.amount}}<span>{{displayCurrencyIcon}}</span></h4>
-</li>
+        </li>
     `,
     computed: {
         displayCurrencyIcon() {

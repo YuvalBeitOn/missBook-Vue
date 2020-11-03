@@ -11,7 +11,10 @@ export default {
     data() {
         return {
             book: null,
-            hideDesc: true
+            hideDesc: true,
+            isAddingReview: false,
+            nextBookId: null,
+            prevBookId: null
         }
     },
     template: `
@@ -25,8 +28,8 @@ export default {
                 <li><h2>{{book.title}}</h2></li>
                 <li>{{book.subtitle}}</li>
                 <li> {{displayReadLength}}</li>
-                <li v-bind:style="{color}">{{book.listPrice.amount}}
-                    <span>{{displayCurrencyIcon}}</span>
+                <li :class="color">{{book.listPrice.amount}}
+                    <span :class="color"  >{{displayCurrencyIcon}}</span>
                 </li>          
                <li>Authors: {{displayAuthors}}</li>
                <li>Published Date: {{book.publishedDate}}</li>
@@ -37,18 +40,24 @@ export default {
                    <span>{{displayCategories}}</span>
                 </li>
                <li>Language: {{book.language}}</li>
-                <li><long-text v-bind:txt="book.description"></long-text></li> 
+                <li><long-text :txt="book.description"></long-text></li> 
                 </div>
             </ul>
             <div class="details-btns flex justify-center align-center">
-            <review-add  :book="book"></review-add>
+            <button @click="toggleAddReview">Add Review</button>
+            <review-add v-if="isAddingReview"  :isAddingReview="isAddingReview" :toggleAddReview="toggleAddReview" @added="updateBook" :book="book"></review-add>
             <button v-on:click="unSelectBook">Back</button>
             </div>
-                    <ul class="reviews">
+                    <ul v-if="book.reviews" class="reviews">
                         <li v-for="review in book.reviews" :key="review.id">
                             <book-reviews @delete="deleteReview" :review="review" />
                         </li>
                     </ul>
+             <nav>
+            <router-link v-if="prevBookId" :to="prevBookId" exact>Previous Book</router-link>             
+            <router-link v-if="nextBookId" :to="nextBookId" exact>Next Book</router-link>
+             
+            </nav>       
         </section>
     `,
     computed: {
@@ -62,15 +71,19 @@ export default {
             else if (this.book.publishedDate < 1) return 'New!'
         },
         displayAuthors() {
-            return this.book.authors.join(',');
+            const authors = this.book.authors;
+            return (authors) ? authors.join(',') : 'Unknown'
         },
         displayCategories() {
-            return this.book.categories.join(', ');
+            if (this.book.categories) return this.book.categories.join(', ');
+            else return '';
         },
         displayCurrencyIcon() {
-            if (this.book.listPrice.currencyCode === 'ILS') return '₪';
-            else if (this.book.listPrice.currencyCode === 'USD') return '$';
-            else return '€';
+            if (this.book.listPrice.amount) {
+                if (this.book.listPrice.currencyCode === 'ILS') return '₪';
+                else if (this.book.listPrice.currencyCode === 'USD') return '$';
+                else return '€';
+            } else return 'Not For Sale';
         },
         color() {
             if (this.book.listPrice.amount > 150) return 'red';
@@ -78,6 +91,12 @@ export default {
         },
         isOnSale() {
             return this.book.listPrice.isOnSale;
+        },
+    },
+
+    watch: {
+        '$route.params.bookId': function() {
+            this.onRouteUpdate();
         }
     },
     methods: {
@@ -89,7 +108,31 @@ export default {
             this.book.reviews.splice(idx, 1)
             bookService.saveBooksToStorage();
             eventBus.$emit('show-msg', { txt: 'Review has been deleted', type: 'Success' })
+        },
+        updateBook(book) {
+            const id = this.$route.params.bookId
+            this.book = book;
+            console.log(this.book, 'update');
+
+        },
+        toggleAddReview() {
+            console.log('here');
+            this.isAddingReview = !this.isAddingReview;
+        },
+        onRouteUpdate() {
+            const id = this.$route.params.bookId
+            console.log(id);
+            bookService.getById(id)
+                .then(book => {
+                    this.book = book;
+                    console.log(this.book, 'book');
+                })
+            const nextPrevBooks = bookService.getNextAndPrevId(id)
+            this.nextBookId = nextPrevBooks.nextBookId;
+            this.prevBookId = nextPrevBooks.prevBookId;
         }
+
+
     },
     components: {
         longText,
@@ -97,10 +140,6 @@ export default {
         bookReviews
     },
     created() {
-        console.log(this.$route.params);
-        const id = this.$route.params.bookId
-        console.log(id);
-        bookService.getById(id)
-            .then(book => this.book = book)
+        this.onRouteUpdate();
     }
 }

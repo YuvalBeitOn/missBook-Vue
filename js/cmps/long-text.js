@@ -1,7 +1,7 @@
 export default {
     props: ["txt"],
     template: `
-      <section class="mr-5">
+      <section class="long-text">
         <p>{{textToShow}}</p>
         <button @click="isShowAll = !isShowAll">{{buttonTxt}}</button>
       </section>

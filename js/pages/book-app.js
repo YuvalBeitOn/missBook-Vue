@@ -3,15 +3,15 @@ import bookList from '../cmps/book-list.js';
 import bookDetails from '../pages/book-details.js';
 import bookFilter from '../cmps/book-filter.js';
 import { eventBus } from '../services/event-bus-service.js'
+import bookAdd from '../cmps/book-add.js'
 
 
 export default {
     template: `
-        <section class="book-app container">
-            <div  v-if="!selectedBook">
-                <book-filter @filtered="setFilter"/>
+        <section class="book-app container" v-if="!selectedBook">
+                <book-filter @filtered="setFilter"> </book-filter>
+                <book-add/>
                 <book-list :books="booksToShow" @selected="selectBook"/>            
-            </div>
             <book-details v-else :book="selectedBook" @unSelect="selectedBook=null"/>                
         </section>
     `,
@@ -47,6 +47,7 @@ export default {
     components: {
         bookDetails,
         bookFilter,
-        bookList
+        bookList,
+        bookAdd
     }
 }

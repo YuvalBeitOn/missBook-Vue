@@ -2,6 +2,7 @@
 @import 'details.css';
 @import 'review.css';
 @import 'user-msg.css';
+@import 'book-add.css';
 * {
     box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;

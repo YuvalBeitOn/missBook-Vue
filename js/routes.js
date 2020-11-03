@@ -1,14 +1,8 @@
 import bookApp from './pages/book-app.js';
 import homePage from './pages/home-page.js';
 import bookDetails from './pages/book-details.js';
+import { aboutUs, aboutUsServices, aboutUsTeam } from './pages/about-us.js';
 
-const aboutUs = {
-    template: `
-    <section>
-        <h1>about us...</h1>
-    </section>
-    `
-}
 
 const myRoutes = [{
         path: '/',
@@ -16,7 +10,16 @@ const myRoutes = [{
     },
     {
         path: '/about',
-        component: aboutUs
+        component: aboutUs,
+        children: [{
+                path: 'services',
+                component: aboutUsServices
+            },
+            {
+                path: 'team',
+                component: aboutUsTeam
+            },
+        ]
     },
     {
         path: '/book',

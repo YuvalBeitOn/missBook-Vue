@@ -4,10 +4,8 @@ import { eventBus } from '../services/event-bus-service.js';
 
 
 export default {
-    props: ["book"],
+    props: ["book", "isAddingReview", "toggleAddReview"],
     template: `
-    <section>
-    <button @click="toggleAddReview">Add Review</button>
     <section v-show="isAddingReview" class="review-add">
         <form class="add-review-form flex flex-column justify-center align-center" @submit.prevent>
             <h3>Add a review</h3>
@@ -39,11 +37,9 @@ export default {
             <button @click="toggleAddReview">Cancel</button>
         </div>
     </section>
-</section>
 `,
     data() {
         return {
-            isAddingReview: false,
             review: {
                 id: '',
                 fullName: 'Book Reader',
@@ -54,13 +50,10 @@ export default {
         }
     },
     methods: {
-        toggleAddReview() {
-            this.isAddingReview = !this.isAddingReview;
-        },
         addReview() {
             this.review.id = utilService.makeId()
             bookService.addReview(this.review, this.book.id)
-                // this.$emit('added', this.bookId);
+                .then(addedBook => this.$emit('added', addedBook));
             eventBus.$emit('show-msg', { txt: 'Review has been added', type: 'Success' })
             this.review = {
                 id: '',
@@ -69,6 +62,7 @@ export default {
                 readAt: new Date().toISOString().substr(0, 10),
                 moreInfo: ''
             }
+            this.toggleAddReview();
         }
     },
     mounted() {
