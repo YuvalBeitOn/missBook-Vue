@@ -1,0 +1,47 @@
+.book-details {
+    text-align: center;
+}
+
+.book-img {
+    width: 300px;
+    border-radius: 5px;
+    border: 2px solid white;
+}
+
+.sale {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: red;
+}
+
+.sale-img {
+    width: 100px;
+    margin-top: 1rem;
+}
+
+.main-details {
+    margin-right: 2rem;
+}
+
+.aside-details {
+    margin-left: 2rem;
+}
+
+.review-add {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    top: 20%;
+    left: 37.5%;
+}
+
+.review-add label {
+    margin-bottom: 1rem;
+}
+
+.details-btns button {
+    margin: 0.5rem;
+}

@@ -1,0 +1,84 @@
+@import 'helpers.css';
+@import 'details.css';
+@import 'review.css';
+@import 'user-msg.css';
+* {
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(19, 19, 19);
+}
+
+body {
+    background-color: #bfafafc9;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.644);
+    padding: 8px;
+    border: 1px solid gray;
+}
+
+ul {
+    list-style: none;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: cornsilk;
+}
+
+a:-webkit-any-link {
+    color: cornsilk;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.book {
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #ffffff3b;
+    background-color: #f0f8ffba;
+    border-radius: 10px;
+    width: 250px;
+}
+
+.book-list {
+    margin-top: 2rem;
+}
+
+.book-filter {
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.book-preview img {
+    width: 200px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.app-header {
+    width: 100%;
+}
+
+.book-filter label {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
